@@ -1,0 +1,20 @@
+{
+  "app": { "name": "Husvärden", "tagline": "Vet vad som gjorts, vad som väntar och vad det kostar." },
+  "nav": { "properties": "Fastigheter", "signOut": "Logga ut" },
+  "login": { "title": "Logga in", "email": "E-post", "submit": "Skicka inloggningslänk", "sent": "Kolla din e-post efter en inloggningslänk." },
+  "properties": {
+    "title": "Dina fastigheter", "empty": "Inga fastigheter ännu.", "add": "Lägg till fastighet", "role": "Din roll",
+    "name": "Namn", "address": "Adress", "type": "Typ", "yearBuilt": "Byggår", "size": "Storlek (m²)",
+    "heating": "Uppvärmning", "currency": "Valuta", "create": "Skapa fastighet"
+  },
+  "types": { "house": "Villa", "rowhouse": "Radhus", "apartment": "Lägenhet", "cottage": "Stuga", "other": "Annat" },
+  "roles": { "owner": "Ägare", "editor": "Redigerare", "viewer": "Läsare" },
+  "property": {
+    "overview": "Översikt", "upcoming": "Kommande uppgifter", "noTasks": "Inga kommande uppgifter.",
+    "budget": "Utgifter i år", "members": "Medlemmar", "invite": "Bjud in",
+    "inviteEmail": "E-post att bjuda in", "pendingInvites": "Väntande inbjudningar", "copyLink": "Inbjudningslänk",
+    "remove": "Ta bort", "comingSoon": "Kommer snart"
+  },
+  "sections": { "tasks": "Uppgifter", "log": "Historik", "components": "Byggdelar", "budget": "Budget" },
+  "invite": { "title": "Gå med i fastighet", "accept": "Acceptera inbjudan", "error": "Inbjudan är ogiltig, har gått ut eller gäller en annan e-postadress." }
+}

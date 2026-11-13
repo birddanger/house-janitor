@@ -1,26 +1,25 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-brand: #2f5d50;
+  --color-brand-dark: #234639;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer components {
+  .input {
+    @apply w-full rounded-md border border-stone-300 bg-white px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-dark disabled:opacity-50;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center rounded-md px-3 py-2 text-sm text-stone-700 hover:bg-stone-100;
+  }
+  .card {
+    @apply rounded-lg border border-stone-200 bg-white p-5 shadow-sm;
+  }
+  .label {
+    @apply mb-1 block text-sm font-medium text-stone-700;
+  }
 }

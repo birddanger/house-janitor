@@ -1,0 +1,15 @@
+import { getRequestConfig } from "next-intl/server";
+import { cookies } from "next/headers";
+
+export const LOCALES = ["en", "fi", "sv"] as const;
+export type Locale = (typeof LOCALES)[number];
+
+export default getRequestConfig(async () => {
+  const cookieLocale = (await cookies()).get("locale")?.value;
+  const locale: Locale = LOCALES.includes(cookieLocale as Locale) ? (cookieLocale as Locale) : "en";
+  return {
+    locale,
+    messages: (await import(`../../messages/${locale}.json`)).default,
+    timeZone: "Europe/Helsinki",
+  };
+});

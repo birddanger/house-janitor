@@ -1,0 +1,20 @@
+{
+  "app": { "name": "House Janitor", "tagline": "Know what's been done, what's next, and what it costs." },
+  "nav": { "properties": "Properties", "signOut": "Sign out" },
+  "login": { "title": "Sign in", "email": "Email", "submit": "Send magic link", "sent": "Check your email for a sign-in link." },
+  "properties": {
+    "title": "Your properties", "empty": "No properties yet.", "add": "Add property", "role": "Your role",
+    "name": "Name", "address": "Address", "type": "Type", "yearBuilt": "Year built", "size": "Size (m²)",
+    "heating": "Heating", "currency": "Currency", "create": "Create property"
+  },
+  "types": { "house": "Detached house", "rowhouse": "Row house", "apartment": "Apartment", "cottage": "Cottage", "other": "Other" },
+  "roles": { "owner": "Owner", "editor": "Editor", "viewer": "Viewer" },
+  "property": {
+    "overview": "Overview", "upcoming": "Upcoming tasks", "noTasks": "No upcoming tasks.",
+    "budget": "Spent this year", "members": "Members", "invite": "Invite",
+    "inviteEmail": "Email to invite", "pendingInvites": "Pending invitations", "copyLink": "Invite link",
+    "remove": "Remove", "comingSoon": "Coming soon"
+  },
+  "sections": { "tasks": "Tasks", "log": "History", "components": "Components", "budget": "Budget" },
+  "invite": { "title": "Join property", "accept": "Accept invitation", "error": "This invitation is invalid, expired, or for another email." }
+}

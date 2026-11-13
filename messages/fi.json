@@ -1,0 +1,20 @@
+{
+  "app": { "name": "Talonmies", "tagline": "Tiedä mitä on tehty, mitä on tulossa ja mitä se maksaa." },
+  "nav": { "properties": "Kohteet", "signOut": "Kirjaudu ulos" },
+  "login": { "title": "Kirjaudu", "email": "Sähköposti", "submit": "Lähetä kirjautumislinkki", "sent": "Tarkista sähköpostisi kirjautumislinkin varalta." },
+  "properties": {
+    "title": "Kohteesi", "empty": "Ei vielä kohteita.", "add": "Lisää kohde", "role": "Roolisi",
+    "name": "Nimi", "address": "Osoite", "type": "Tyyppi", "yearBuilt": "Rakennusvuosi", "size": "Koko (m²)",
+    "heating": "Lämmitys", "currency": "Valuutta", "create": "Luo kohde"
+  },
+  "types": { "house": "Omakotitalo", "rowhouse": "Rivitalo", "apartment": "Kerrostalohuoneisto", "cottage": "Mökki", "other": "Muu" },
+  "roles": { "owner": "Omistaja", "editor": "Muokkaaja", "viewer": "Katselija" },
+  "property": {
+    "overview": "Yleiskatsaus", "upcoming": "Tulevat tehtävät", "noTasks": "Ei tulevia tehtäviä.",
+    "budget": "Kulut tänä vuonna", "members": "Jäsenet", "invite": "Kutsu",
+    "inviteEmail": "Kutsuttavan sähköposti", "pendingInvites": "Avoimet kutsut", "copyLink": "Kutsulinkki",
+    "remove": "Poista", "comingSoon": "Tulossa"
+  },
+  "sections": { "tasks": "Tehtävät", "log": "Historia", "components": "Rakenneosat", "budget": "Budjetti" },
+  "invite": { "title": "Liity kohteeseen", "accept": "Hyväksy kutsu", "error": "Kutsu on virheellinen, vanhentunut tai lähetetty toiseen sähköpostiin." }
+}

@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# House Janitor
 
-## Getting Started
+Web-first (PWA) app for tracking home maintenance, planning recurring tasks, sending reminders and
+budgeting across multiple properties, with per-property shared access. Targets the Nordics (FI/SV/EN,
+EUR/SEK/NOK/DKK).
 
-First, run the development server:
+**Stack:** Next.js 15 (App Router, Server Actions), Tailwind 4, next-intl, Supabase (Postgres + RLS, Auth, Storage).
+
+## Setup
+
+1. Create a Supabase project (EU region, e.g. Stockholm or Frankfurt).
+2. Run `supabase/migrations/0001_init.sql` in the SQL editor (or `supabase db push` with the CLI).
+3. In Supabase → Authentication → URL configuration, add `http://localhost:3000/auth/callback` as a redirect URL.
+4. Configure env and run:
 
 ```bash
+cp .env.example .env.local   # fill in URL + anon key
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+supabase/migrations/0001_init.sql   schema, RLS policies, triggers, RPCs (accept_invitation, complete_task)
+messages/{en,fi,sv}.json            translations (locale chosen via cookie)
+src/middleware.ts                   session refresh + auth guard
+src/lib/supabase/server.ts          server Supabase client
+src/app/login, auth/callback        magic-link sign-in
+src/app/(app)/properties            list, create, property overview + members & invitations
+src/app/(app)/invite/[token]        accept an invitation
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Access model
 
-## Learn More
+Every row is scoped to a property. `property_members` holds `owner | editor | viewer` per property;
+RLS helpers `is_member`, `can_edit`, `is_owner` gate all tables and the `attachments` storage bucket
+(objects stored under `<property_id>/...`). The creator of a property becomes its owner automatically,
+and the last owner cannot be removed.
 
-To learn more about Next.js, take a look at the following resources:
+## Done so far vs. next
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [x] Schema + RLS for all MVP entities
+- [x] Magic-link auth, language switcher (EN/FI/SV)
+- [x] Properties: list, create, overview
+- [x] Shared access: invite by link, roles, remove member, accept invite
+- [ ] Tasks UI (recurring/seasonal, complete via `complete_task` RPC)
+- [ ] Maintenance log + attachments
+- [ ] Components + lifespan bars
+- [ ] Budget page, forecast, CSV export
+- [ ] Reminders: daily scheduled function → email (Resend) + web push; send invite emails
+- [ ] Onboarding wizard with Nordic task templates
+- [ ] PWA icons + service worker
