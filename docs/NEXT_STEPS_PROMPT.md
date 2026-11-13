@@ -4,7 +4,7 @@ You are continuing work on **House Janitor**, a web-first (PWA) app for tracking
 multiple properties, planning recurring tasks, sending reminders and budgeting. It is for personal use by
 a small household in the Nordics (Finland/Sweden). Repository: `birddanger/house-janitor`, branch `main`.
 
-Read `README.md`, `supabase/migrations/0001_init.sql`, `src/app/(app)/properties/[id]/page.tsx` and
+Read `README.md`, `supabase/migrations/0001_init.sql`, `supabase/migrations/0002_grants.sql`, `src/app/(app)/properties/[id]/page.tsx` and
 `src/app/(app)/properties/actions.ts` before writing code. They define the conventions you must follow.
 
 ---
@@ -49,7 +49,10 @@ Read `README.md`, `supabase/migrations/0001_init.sql`, `src/app/(app)/properties
 
 **Running environment:** the owner runs the app locally (`npm run dev`, `.env.local`) against a hosted Supabase
 project and applies migrations by pasting SQL into the Supabase SQL Editor. So:
-- Put every schema change in a **new** numbered file (`supabase/migrations/0002_….sql`, …). Never edit `0001`.
+- Put every schema change in a **new** numbered file (`supabase/migrations/0003_….sql`, …). Never edit existing migrations (`0001_init.sql`, `0002_grants.sql`).
+- RLS only narrows privileges, it does not grant them: every new table, column-level update or RPC must come
+  with explicit `grant …` statements to `authenticated` in the same migration, mirroring its policies
+  (see `0002_grants.sql`). `anon` gets nothing.
 - Migrations must be safe to read and run once in the SQL editor; list in your final message exactly which
   files the owner must run, in order.
 
@@ -77,7 +80,7 @@ project and applies migrations by pasting SQL into the Supabase SQL Editor. So:
 - **Complete:** a dialog/inline form asking performed-on date (default today), actual cost, labour portion, notes;
   calls `complete_task`. Afterwards offer "Attach receipt" linking to the new log entry.
 - **Snooze** (+3 days / +1 week / pick date) and **Skip this occurrence** (advance `next_due_on` by one interval
-  without creating a log entry). Implement skip as a SQL function `skip_task(p_task_id)` in migration 0002 so the
+  without creating a log entry). Implement skip as a SQL function `skip_task(p_task_id)` in migration 0003 so the
   interval math lives in one place.
 - **Archive/delete** a task. Viewers see everything read-only.
 - Filters: "Assigned to me", component.
@@ -86,7 +89,7 @@ project and applies migrations by pasting SQL into the Supabase SQL Editor. So:
 - Chronological list grouped by year → month; shows title, date, kind, cost (labour portion if > 0), who logged it,
   contractor, attachment count.
 - Filters: year, component, kind, contractor; text search over title + description (`ilike` is fine; add a trigram
-  or full-text index in 0002 if cheap).
+  or full-text index in 0003 if cheap).
 - **Add/edit entry** form (also used by the "+ Log work" button): date, title, description, kind, category,
   component, contractor (select + "add new" inline), cost, labour cost (validate `labour_cost <= cost`).
 - **Attachments:** add `src/lib/supabase/client.ts` (`createBrowserClient`). Upload from the browser directly to the
@@ -101,7 +104,7 @@ project and applies migrations by pasting SQL into the Supabase SQL Editor. So:
 - List with category, brand/model, install date and a **lifespan bar**: age / expected lifespan, coloured green
   (< 70 %), amber (70–100 %), red (> 100 %). Show warranty status ("warranty until 03.2027" / "expired").
 - Create/edit/delete form. Component detail page shows its tasks and its log history.
-- Migration 0002: add `components.replacement_cost numeric(12,2)` (used by the budget forecast).
+- Migration 0003: add `components.replacement_cost numeric(12,2)` (used by the budget forecast).
 
 ### Phase E – Budget (`/properties/[id]/budget`)
 - Year selector (default current year). Set/edit the annual budget (upsert into `budgets`).
@@ -154,7 +157,7 @@ project and applies migrations by pasting SQL into the Supabase SQL Editor. So:
   - picks recipients: the assignee, otherwise all owners/editors of the property with `property_members.notify = true`;
   - sends at most one reminder per task per due date, and overdue nudges at most every 3 days;
   - groups multiple tasks for the same person into one email.
-- Migration 0003: `profiles.reminder_lead_days int default 3`, `profiles.weekly_digest boolean default true`,
+- Migration 0004: `profiles.reminder_lead_days int default 3`, `profiles.weekly_digest boolean default true`,
   and `reminder_log (task_id, user_id, due_on, kind, sent_at)` with a unique key on
   `(task_id, user_id, due_on, kind)` to make the job idempotent.
 - **Weekly digest** (Mondays, same endpoint with `?digest=1`): this week's tasks across all of the user's properties.
@@ -170,7 +173,7 @@ project and applies migrations by pasting SQL into the Supabase SQL Editor. So:
 - Service worker `public/sw.js` handling `push` and `notificationclick` (opens the task's property tasks page).
   No offline caching beyond what's needed.
 - `push_subscriptions (user_id, endpoint unique, p256dh, auth, created_at)` with RLS "own rows only"
-  (migration 0003). "Enable notifications on this device" button in Settings; VAPID keys via env
+  (migration 0004). "Enable notifications on this device" button in Settings; VAPID keys via env
   (`NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT`), sending via the `web-push` package from the
   reminders job alongside email. Remove dead subscriptions on 404/410.
 - Note in the UI that on iPhone the app must first be added to the Home Screen.
